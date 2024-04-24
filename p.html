@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="icone-medizata.png" />
+    <title>Medizata - Produto</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+
+    <!-- Inclua o arquivo CSS externo -->
+    <link rel="stylesheet" type="text/css" href="sharestyles.css">
+
+    <!-- Inclua seus estilos CSS aqui -->
+    <style>
+        .carrossel img {
+            width: 30%; /*
+            max-height: 800px;*/
+        }
+            /* Estilos para o elemento de preço */
+            .preco {
+            color: #FFFFFF;
+            float: right; /* Alinhar à direita */
+            font-size: 25px; /* Tamanho da fonte */
+            margin-right: 15%;
+        }
+
+        .botaoPedirNoWhats {
+            padding-top: 20px;
+            height: 50px;
+        }
+    </style>
+
+
+</head>
+<body>
+    <!-- Cabeçalho com a logo -->
+    <div id="header-container"></div>
+
+    <div id="nomeDoProduto" class="Subtitulos"></div>
+
+    <!-- Carrossel de imagens -->
+    <div class="carrossel-container">
+        <div class="carrossel" id="meuCarrossel">
+            <!-- Adicione as imagens do carrossel aqui -->
+            <img id="imagem1" src="img1.png" alt="Imagem 1">
+            <img id="imagem2" src="img2.png" alt="Imagem 2">
+            <img id="imagem3" src="img3.png" alt="Imagem 3">
+            <img id="imagem4" src="img4.png" alt="Imagem 4">
+            <img id="imagem1" src="img5.png" alt="Imagem 5">
+            <img id="imagem2" src="img6.png" alt="Imagem 6">
+            <img id="imagem3" src="img7.png" alt="Imagem 7">
+            <img id="imagem4" src="img8.png" alt="Imagem 8">
+        </div>
+    </div>
+
+    <div class="carrossel-controls">
+        <!-- Preço do produto alinhado à direita -->
+        <span id="precoDoProduto" class="preco">Preço não carregando.</span>
+    </div>
+
+        <a id="botaoPedirNoWhats" href="" target="_blank">
+            <img class="botaoPedirNoWhats" src="pedirnowhats.png">
+        </a>
+		
+		<div class="BodyText" valign="top">
+		Geralmente o preço acima é para o cliente retirar o produto no endereço da marcenaria Medizata, caso o cliente deseje a entrega é cobrado mais um valor aproximado de 50 reais para entregar em qualquer endereço da cidade, a entrega não tem um valor fixo por ser terceirizada.<br>
+		</div>
+		
+    <div class="Subtitulos" valign="top" scrolling="auto">Descrição</div>
+    <div id="descricao" class="BodyText" valign="top" scrolling="auto"></div>
+
+    <!-- Rodapé -->
+    <div id="footer-container"></div>
+
+    <!-- Inclua o jQuery antes deste código -->
+    <script src="https://releases.jquery.com/git/jquery-git.js"></script>
+
+    <!-- Adicione a biblioteca jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+
+        // Obtém os parâmetros da URL
+        const params = new URLSearchParams(window.location.search);
+
+        // Obtém o valor do parâmetro 'nome' na URL
+        const cdpdaUrl = params.get('cdp');
+
+        async function loadCarrosselp() {
+
+            // Obtém a referência da imagem do carrossel
+            const carrosselElement = document.getElementById('meuCarrossel');
+
+            // Obtém todas as imagens dentro da div do carrossel
+            const imagensCarrossel = carrosselElement.querySelectorAll('img');
+
+            // Percorre todas as imagens e atualiza o atributo src com a variável cdp
+            imagensCarrossel.forEach((imagem) => {
+                const nomeImagem = imagem.getAttribute('src');
+                imagem.src = "produtos/" + cdpdaUrl + "/" + nomeImagem;
+            });
+
+            // Inicializa o carrossel
+            $('.carrossel').slick({
+                dots: false,
+                arrows: true,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                swipe: true, // Habilita a movimentação por toque
+                draggable: true, // Habilita a movimentação manual com o mouse
+            });
+
+        }   
+
+        const nomeProdutoElement = document.getElementById('nomeDoProduto');
+        const precoProdutoElement = document.getElementById('precoDoProduto');
+
+        // Use o Fetch para obter o nome do produto.
+        fetch("produtos/" + cdpdaUrl + "/info.txt")
+            .then(response => response.text())
+            .then(data => {
+                const linhas = data.split('\n');
+                if (linhas.length >= 2) {                    
+
+                    nomeProdutoElement.textContent = linhas[0].trim();
+                    precoProdutoElement.textContent = "R$ " + linhas[1].trim();
+                    document.addEventListener("DOMContentLoaded", gerarLinkDoWhatsApp(linhas[0]));
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao ler o arquivo: ' + error);
+            });
+
+            async function gerarLinkDoWhatsApp(nomeProduto) {
+            // Obtém a âncora por ID
+            const whatsappLink = document.getElementById('botaoPedirNoWhats');
+
+            // Nome do produto
+            //const nomeProduto = nomeProdutoElement.textContent;
+
+            // Número do WhatsApp
+            const numeroWhatsApp = "5542991467224";
+
+             //somenteNumCodigo = cdpdaUrl.remove("cdp");
+
+            // Monta o texto da mensagem
+            const mensagem = `Olá! Estou interessado no produto ${nomeProduto.trim()}, código ${cdpdaUrl}`;
+
+            // Define o valor do atributo href da âncora
+            const url = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${encodeURIComponent(mensagem)}`;
+            whatsappLink.href = url;
+            }
+
+        // Função para carregar o arquivo de descrição
+        function carregarDescricao() {
+            // Caminho para o arquivo de descrição
+            const arquivoDescricao = "produtos/" + cdpdaUrl + "/descricao.txt";
+
+            // Faz uma requisição para o arquivo de descrição
+            fetch(arquivoDescricao)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Descrição não encontrada.');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    // Substitui quebras de linha por <br> para preservar a formatação
+                    const descricaoFormatada = data.replace(/\n/g, '<br>');
+                    // Insere a descrição na div com id "descricaoDiv"
+                    document.getElementById('descricao').innerHTML = descricaoFormatada;
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar a descrição:', error);
+                    // Exibe a mensagem de "Descrição não adicionada."
+                    document.getElementById('descricao').innerText = 'Descrição não adicionada.';
+                });
+        }
+
+        // Chama a função para carregar a descrição
+        carregarDescricao();
+
+        // Carrega o carrossel quando a página estiver pronta
+        document.addEventListener("DOMContentLoaded", loadCarrosselp);
+
+    </script>
+
+    <script src="components.js"></script>
+    <script>
+        loadHeader(); // Carrega o cabeçalho
+        loadFooter(); // Carrega o rodapé
+    </script>
+
+
+
+</body>
+</html>

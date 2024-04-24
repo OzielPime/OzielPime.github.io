@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="icone-medizata.png" />
+    <title>Medizata Marcenaria</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-J50TC77QLG"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'G-J50TC77QLG');
+	</script>
+
+    <!-- Inclua o arquivo CSS externo -->
+    <link rel="stylesheet" type="text/css" href="sharestyles.css">
+
+    <!-- Inclua seus estilos CSS aqui -->
+    <style>
+
+        .ProdutoNoCarrossel {
+            margin-top: 5px; /* Espaçamento entre a imagem e o preço */
+            font-size: 18px;
+            font-weight: bold;
+            
+        }
+
+        .ProdutoNoCarrossel-nomeProduto {
+            float: left;
+            font-size: 18px;
+            color: #FFFFFF;
+            margin-left: 20px;
+            word-wrap: break-word;
+        }
+
+        .ProdutoNoCarrossel-precoProduto {
+            float: right;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(76, 255, 0);
+            margin-right: 20px;
+        }
+
+		/* Estilos para as avaliações do Google Maps */
+		.google-maps-reviews {
+			//margin: 20px 0;
+			//padding: 20px;
+			border: 1px solid #ccc;
+		}
+
+		.maps-reviews-profilephoto {
+			//margin: 20px 0;
+			margin-left: 10px;
+			width: 60px;
+		}
+
+        .maps-reviews-stars img{
+            width: 20px;
+        }/**/
+		
+        .maps-reviews-stars{
+            display: flex;
+			margin-left: 10px;
+        }
+		
+		/* Estilos para a caixa de pop-up */
+        .popup {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: rgb(32,32,32);
+			color: #FFFFFF;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        /* Estilos para o botão de fechar */
+        .close-btn {
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+		
+	/* Estilize o pop-up como desejar */
+        #popupNomeCliente {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+		
+    </style>
+
+    <!-- Inclua seus scripts JavaScript aqui -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9341178127206805"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Cabeçalho com a logo -->
+    <div id="header-container"></div>
+
+    <!-- Outras seções do conteúdo do site -->
+    <section>
+        <!-- Apresentação -->
+
+        <p class="BodyText" valign="top"><span id="snomeSalvo"></span>Somos especialistas em transformar suas ideias em realidade, criando móveis planejados únicos que se encaixam perfeitamente em sua casa ou comércio. Nossa paixão pelo trabalho nos permite oferecer qualidade excepcional a preços competitivos, nosso compromisso é entregar móveis feitos com talento e capricho, superando suas expectativas.</p>
+
+        <p class="BodyText" valign="top">Nosso diferencial está na dedicação total a cada projeto, utilizando nossa criatividade e precisão para alcançar resultados impressionantes. Além disso, contamos com um software exclusivo de precificação, buscando o nosso crescimento e o melhor custo-benefício para você.</p>
+
+        <p class="BodyText" valign="top">Com projetos 3D personalizados, transformamos suas inspirações em modelos tangíveis, proporcionando uma experiência visual envolvente antes mesmo de começarmos a construção.</p>
+
+    </section>
+
+    <!-- Carrossel de imagens -->
+    <div class="carrossel-container">
+        <div class="carrossel" id="carrossel">
+        </div>
+    </div>
+
+
+
+    <section>
+
+        <p class="BodyText" valign="top">Explore nossos trabalhos para encontrar o que mais te atende, mas se precisar de algo totalmente diferente sinta-se à vontade para nos enviar suas referências encontradas na internet. Nós garantiremos que cada móvel seja único e projetado especialmente para você.</p>
+
+        <p class="BodyText" valign="top">Entre em contato conosco para iniciar uma jornada rumo a ambientes mais funcionais, belos e acolhedores. Estamos ansiosos para criar algo especial para você!</p>
+
+        <p class="BodyText" valign="top">Confira alguns dos produtos no <a href="https://www.facebook.com/marketplace/profile/100005727309978/?ref=share_attachment" title="Veja no Facebook" target="_blank" class="BodyText">Marketplace</a></p>
+
+    </section>
+
+    <section>
+
+        <p class="BodyText" id="vendasText" valign="top">Já são <span id="numeroVendas">dezenas de</span> vendas realizadas desde janeiro de 2023.</p>
+
+    </section>
+	
+	<script>
+        // Função para carregar o número de vendas do arquivo
+        function carregarNumeroVendas() {
+            // Supondo que o arquivo "NumeroDeVendas.txt" está na mesma pasta que este HTML
+            var arquivo = "NumeroDeVendas.txt";
+
+            // Faz uma requisição para obter o conteúdo do arquivo
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // Atualiza o conteúdo da página com o número de vendas do arquivo
+                    var numeroVendas = xhr.responseText.trim();
+                    document.getElementById('numeroVendas').innerText = numeroVendas;
+                }
+            };
+            xhr.open('GET', arquivo, true);
+            xhr.send();
+        }
+
+        // Chama a função quando a página é carregada
+        window.onload = function() {
+            carregarNumeroVendas();
+        };
+    </script>
+	
+    <!-- Seção de avaliações do Google Maps -->
+    <section class="google-maps-reviews">
+        <!-- Adicione o código das avaliações do Google Maps aqui -->
+        <div id="avaliacoes">
+		<p class="BodyText" valign="top"><a href="https://g.page/r/Ccj8TePTDdZfEBM/review" target="_blank" class="BodyText-links">Avalie-nos</a></p>
+            <div class="maps-reviews-stars"></div>		
+        </div>
+		<!-- <p class="BodyText" valign="top"><a href="https://maps.app.goo.gl/7qpLpYxkqv2H5bBa6" title="Veja mais avaliações" target="_blank" class="BodyText-links">...Ver mais</a></p> -->
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function gerarEstrelas(pontuacao) {
+            const estrelas = [];
+            for (let i = 0; i < pontuacao; i++) {
+                const img = document.createElement("img");
+                img.src = "estrela.png"; // Substitua pelo caminho da sua imagem de estrela
+                estrelas.push(img);
+            }
+            return estrelas;
+        }
+
+        // Função para carregar as avaliações do arquivo "avaliacoes.txt"
+        function loadAvaliacoes() {
+            const avaliacoesTxt = "avaliacoes.txt";
+
+            axios.get(avaliacoesTxt)
+                .then(function (response) {
+                    // Os dados do JSON estão em response.data
+                    const avaliacoes = response.data.result.reviews;
+
+                    // Agora você pode manipular as avaliações para exibi-las na página como desejar
+                    const avaliacoesDiv = document.getElementById("avaliacoes"); // Suponhamos que você tenha uma div com o ID "avaliacoes" na página
+
+                    // Crie uma div para cada avaliação e adicione as informações
+                    avaliacoes.forEach(avaliacao => {
+                        const divAvaliacao = document.createElement("div");
+                        divAvaliacao.innerHTML = `
+                            <a href=${avaliacao.author_url} target="_blank">
+                                <img src=${avaliacao.profile_photo_url} class="maps-reviews-profilephoto">
+                            </a>
+                        `;
+
+                        const nome = document.createElement("p");
+                        nome.innerHTML = `<span class="BodyText">${avaliacao.author_name}</span>`;
+                        divAvaliacao.appendChild(nome);
+
+                        const estrelas = document.createElement("div");
+                        estrelas.classList.add("maps-reviews-stars");
+
+                        // Chamar a função gerarEstrelas para criar as estrelas
+                        const estrelasImagens = gerarEstrelas(avaliacao.rating);
+                        estrelasImagens.forEach((estrela) => {
+                            estrelas.appendChild(estrela);
+                        });
+
+                        divAvaliacao.appendChild(estrelas);
+
+                        const comentario = document.createElement("p");
+                        comentario.innerHTML = `<span class="BodyText">${avaliacao.text}</span>
+                        <hr>`;
+                        divAvaliacao.appendChild(comentario);
+
+                        // Adicione a div da avaliação à div "avaliacoes"
+                        avaliacoesDiv.appendChild(divAvaliacao);
+                    });
+					
+                })
+                .catch(function (error) {
+                    console.error("Erro ao carregar as avaliações.", error);
+                });
+        }
+        document.addEventListener("DOMContentLoaded", loadAvaliacoes);
+
+    </script>
+
+    <!--<script src="api-maps-json.js"></script>-->
+
+    <section>
+        <!-- Conteúdo da seção 2 -->
+
+    </section>
+
+
+	
+	<!-- Pop-up -->
+    <div class="popup" id="popup">
+        <p>Este site utiliza cookies para melhorar a experiência do usuário. Ao continuar navegando, você concorda com a nossa <a href="privacidade.html" class="BodyText" >Política de Privacidade</a>.</p>
+        <span class="close-btn" onclick="closePopup()">X</span>
+    </div>
+	
+	<script>
+	
+	document.addEventListener('DOMContentLoaded', function() {
+    // Verifica se a política de privacidade foi aceita
+    const aceitouPolitica = localStorage.getItem('politicaPrivacidadeAceita');
+    
+    // Verifica a data de modificação do arquivo HTML
+    const dataModificacaoAtual = new Date(document.lastModified).toLocaleDateString();
+    const dataModificacaoSalva = localStorage.getItem('dataModificacaoPoliticaPrivacidade');
+
+console.log("aceitouPolitica:"+aceitouPolitica);
+console.log("dataModificacaoAtual:"+dataModificacaoAtual);
+console.log("dataModificacaoSalva:"+dataModificacaoSalva);
+
+    if (<!-- !aceitouPolitica || --> 
+	dataModificacaoAtual != dataModificacaoSalva) {
+
+        // Exibir o pop-up automaticamente após um atraso (por exemplo, 5 segundos)
+        setTimeout(function() {
+            document.getElementById('popup').style.display = 'block';
+        }, 5000); // 5000 milissegundos = 5 segundos// Exibe o pop-up da política de privacidade
+        
+		}
+	});
+	
+        // Função para fechar o pop-up
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+			// Após o usuário aceitar a política de privacidade
+			localStorage.setItem('politicaPrivacidadeAceita', 'true');
+			// Após o usuário aceitar novamente a política de privacidade
+			localStorage.setItem('dataModificacaoPoliticaPrivacidade', new Date().toLocaleDateString());
+
+        }
+
+    </script>
+					
+    <!-- Rodapé -->
+    <div id="footer-container"></div>
+
+    <!-- Inclua o jQuery antes deste código -->
+    <script src="https://releases.jquery.com/git/jquery-git.js"></script>
+
+    <!-- Adicione a biblioteca jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Adicione o link para o JavaScript do Slick Carousel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+    <script>
+        // Função para carregar o carrossel com base nos dados do arquivo de texto
+        async function loadCarrossel() {
+            // Localização do arquivo de texto
+            const produtosTxt = "produtos.txt";
+
+            // Obtém o elemento do carrossel
+            const carrossel = document.getElementById("carrossel");
+
+            try {
+                // Faz uma requisição HTTP para o arquivo de texto
+                const response = await fetch(produtosTxt);
+                const data = await response.text();
+                // Divide o conteúdo do arquivo em linhas
+                const linhas = data.trim().split("\n");
+
+                // Loop pelas linhas e cria os slides do carrossel
+                for (const linha of linhas) {
+                    const pastaCDP = linha.trim();
+
+                    // Lê o arquivo "info.txt" dentro da pasta do produto
+                    const infoTxtUrl = `Produtos/${pastaCDP}/info.txt`;
+                    try {
+                        const response = await fetch(infoTxtUrl);
+                        const infoData = await response.text();
+                        const [nomeProduto, preco] = infoData.trim().split("\n");
+
+                        // Cria o slide (imagem + preço)
+                        const slide = document.createElement("div");
+                        slide.innerHTML = `
+                                    <a href="p.html?cdp=${pastaCDP}">
+                                        <img src="Produtos/${pastaCDP}/thumb.png" />
+                                    </a>
+                                    <p class="ProdutoNoCarrossel-nomeProduto">${nomeProduto}</p>
+                                    <p class="ProdutoNoCarrossel-precoProduto">${"R$ "+preco}</p>
+                                        `;
+
+                        // Adiciona o slide ao carrossel
+                        carrossel.appendChild(slide);
+                    } catch (error) {
+                        console.error(`Erro ao carregar informações do arquivo "${infoTxtUrl}":`, error);
+                    }
+                }
+
+                // Inicializa o carrossel
+                $('.carrossel').slick({
+                    dots: false,
+                    arrows: true,
+                    infinite: true,
+                    speed: 500,
+                    slidesToShow: 3,
+                    slidesToScroll: 3
+                });
+
+                // Adiciona o ouvinte de clique em cada imagem do carrossel
+                const carrosselImages = document.querySelectorAll('.carrossel img');
+                carrosselImages.forEach(image => {
+                    image.addEventListener('click', () => {
+                        const href = image.getAttribute('data-href');
+                        if (href) {
+                            window.location.href = href; // Redireciona para a página definida no atributo data-href
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error("Erro ao carregar o arquivo de produtos.", error);
+            }
+        }
+
+        // Carrega o carrossel quando a página estiver pronta
+        document.addEventListener("DOMContentLoaded", loadCarrossel);
+    </script>
+	
+	<!-- Popup do nome -->
+	<div id="popupNomeCliente">
+        <p>Olá! Qual é o seu nome?</p>
+        <input type="text" id="nomeInput">
+        <button onclick="salvarNome()">Salvar</button>
+    </div>
+	
+    <script src="components.js"></script>
+    <script>
+        loadHeader(); // Carrega o cabeçalho
+        loadFooter(); // Carrega o rodapé		
+    </script>
+		
+	<script>
+	
+	        // Função para exibir o pop-up
+        function mostrarPopup() {
+            document.getElementById('popupNomeCliente').style.display = 'block';
+        }
+
+        // Função para salvar o nome e ocultar o pop-up
+        function salvarNome() {
+            var nome = document.getElementById('nomeInput').value;
+
+			nome = nome.charAt(0).toUpperCase() + nome.slice(1);
+
+            // Faça algo com o nome, por exemplo, armazene em localStorage
+            localStorage.setItem('nomeVisitante', nome);
+
+            // Oculte o pop-up
+            document.getElementById('popupNomeCliente').style.display = 'none';
+			
+				fetch('/home-medizata.html', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ nome: nome }),
+				});
+				
+        }
+		
+	        // Função para mostrar o nome salvo, se existir
+        function mostrarNomeSalvo() {
+            var nomeSalvo = localStorage.getItem('nomeVisitante');
+
+            // Se o nome estiver salvo, atualiza a mensagem
+            if (nomeSalvo) {
+                document.getElementById('snomeSalvo').textContent = 'Seja bem-vindo, ' + nomeSalvo+'! ';
+				
+				fetch('/home-medizata.html', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ nome: nomeSalvo }),
+				});
+				
+				console.log(`Bem-vindo, ${nomeSalvo}!`);
+            }
+        }		
+
+		// Verifica se o nome do visitante já foi salvo
+        window.onload = function() {
+            var nomeSalvo = localStorage.getItem('nomeVisitante');			
+
+            // Se o nome não estiver salvo, mostra o pop-up
+            if (!nomeSalvo) {
+				mostrarPopup();
+            } else {
+                // Se o nome estiver salvo, mostra na mensagem
+                mostrarNomeSalvo();
+            }			
+        };
+		//mostrarPopup();
+		carregarNumeroVendas();
+		</script>
+</body>
+</html>

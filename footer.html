@@ -1,0 +1,51 @@
+﻿<style>
+    /* Estilos para o rodapé */
+    footer {
+        background-color: rgb(32,32,32);
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+    }
+			
+</style>
+
+<footer>
+
+    <!-- Conteúdo do rodapé -->
+    <p class="BodyText" valign="top">
+	<!-- <span id="snomeSalvo">Bem-vindo!</span><br> -->
+	Telêmaco Borba - PR, Socomim<br><!--84266-050-->
+	
+	<a href="home-medizata.html"
+		title="vá para a página inicial do site" class="BodyText">Página inicial</a>
+
+	<a href="endereco.html"
+		title="Veja fotos para encontrar a Medizata Marcenaria" class="BodyText">Ver localização</a>
+	
+	<a href="CNPJ.html"
+		title="Sobre o CNPJ" class="BodyText">CNPJ 53.005.718/0001-37</a>
+	
+	<a href="privacidade.html"
+		title="Leia sobre a política de privacidade" class="BodyText">Política de privacidade</a>
+		
+	</p>
+			<script>
+			var nomeSalvo = localStorage.getItem('nomeVisitante');
+
+            // Se o nome estiver salvo, atualiza a mensagem
+            if (nomeSalvo) {
+                document.getElementById('snomeSalvo').textContent = 'Bem-vindo, ' + nomeSalvo + '!';
+				
+				//fetch('/salvar-nome', {
+					//method: 'POST',
+					//headers: {
+					//	'Content-Type': 'application/json',
+					//},
+					//body: JSON.stringify({ nome: nomeSalvo }),
+				//});
+				console.log(`Bem-vindo on footer, ${nomeSalvo}!`);
+            }
+			</script>
+			
+</footer>
+

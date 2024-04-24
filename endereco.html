@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="icone-medizata.png" />
+    <title>Medizata - Endereço</title>
+	
+    <style>
+        .panorama-container {
+            width: 100%; /* Largura da área de visualização */
+            height: 98vh; /* Altura da área de visualização */
+            overflow-x: hidden; /* Oculta a barra de rolagem horizontal */
+            overflow-y: hidden; /* Oculta a barra de rolagem vertical */
+            scroll-snap-type: x mandatory; /* Rolar apenas na direção horizontal */
+        }
+
+        .panorama-image {
+            /*width: 800px;  Largura da imagem panorâmica */
+            height: 100%;
+            scroll-snap-align: start; /* Alinhe ao início da imagem */
+            transition: transform 0.3s ease; /* Adiciona transição para uma rolagem suave */
+        }
+    </style>
+	<script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+	
+	    <!-- Inclua o arquivo CSS externo -->
+    <link rel="stylesheet" type="text/css" href="sharestyles.css">
+	
+</head>
+<body>
+
+    <!-- Cabeçalho com a logo -->
+    <div id="header-container"></div>
+	
+	<p class="BodyText" valign="top">Agende um horário porque se estivermos em um serviço externo não terá ninguém para atender no local.</p>
+	
+	<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3635.8434316244447!2d-50.61677812539074!3d-24.317095789789665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94e9832d7a1ad2d7%3A0x5fd60dd3e34dfcc8!2sMedizata%20Marcenaria!5e0!3m2!1spt-BR!2sbr!4v1701131296649!5m2!1spt-BR!2sbr"
+	width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+	
+    <!-- <p class="BodyText" valign="top">Essa abaixo é uma foto panorâmica do local onde atendo, arraste-a para os lados.</p> -->
+
+    <!-- <div class="panorama-container" id="panorama-container">
+        <img class="panorama-image" id="panorama-image" src="imgpan.jpg" alt="Imagem Panorâmica">
+    </div> -->
+
+    <script>
+        const container = document.getElementById('panorama-container');
+        const image = document.getElementById('panorama-image');
+
+    // Obtém a largura do container
+    const containerWidth = container.clientWidth;
+
+    // Define a posição inicial (por exemplo, para alinhar ao centro do container)
+    const initialPosition = 2320 / 2;
+	    container.scrollLeft = initialPosition;
+	
+        let isDragging = false;
+        let startX;
+        let scrollLeft;
+
+        container.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.pageX - container.offsetLeft;
+            scrollLeft = container.scrollLeft;
+            container.style.cursor = 'grabbing';
+        });
+
+        container.addEventListener('mouseleave', () => {
+            isDragging = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mouseup', () => {
+            isDragging = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.pageX - container.offsetLeft;
+            const walk = (x - startX) * 2;
+            container.scrollLeft = scrollLeft - walk;
+        });
+		
+// Configurar o Hammer.js para detectar gestos de arrastar
+        const mc = new Hammer.Manager(container);
+        mc.add(new Hammer.Pan({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 0 }));
+        
+        mc.on("panstart", (e) => {
+            isDragging = true;
+            startX = e.center.x;
+            scrollLeft = container.scrollLeft;
+            container.style.cursor = 'grabbing';
+        });
+
+        mc.on("panmove", (e) => {
+            if (!isDragging) return;
+            const x = e.center.x;
+            const walk = (x - startX) * 2;
+            container.scrollLeft = scrollLeft - walk;
+        });
+
+        mc.on("panend pancancel", (e) => {
+            isDragging = false;
+            container.style.cursor = 'grab';
+        });
+		
+    </script>
+
+	<!-- <p class="BodyText" valign="top">Como você pôde ver há uma placa de identificação.<br/>
+	Essa abaixo é a foto da fachada do local onde atendo.</p> -->
+	
+    <!-- <div>
+		<img width="100%" src="entrada.jpg" alt="Imagem de entrada">
+        <img width="100%" src="fachada.jpg" alt="Imagem de fachada">
+    </div> -->
+	
+	<p class="BodyText" valign="top">Atendemos no bairro Socomim na rua João Siqueira Filho, à 2 quadras da delegacia, o número do estabelecimento é 660.</br>
+	Não esqueça de clicar nos ícones das redes sociais acima para agendar um horário.</p>
+	
+	    <!-- Rodapé -->
+    <div id="footer-container"></div>
+	
+	<script src="components.js"></script>
+    <script>
+        loadHeader(); // Carrega o cabeçalho
+        loadFooter(); // Carrega o rodapé
+    </script>
+	
+</body>
+</html>
