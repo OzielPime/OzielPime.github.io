@@ -1,0 +1,10 @@
+Módulos maiores:
+Profundidade: 55cm
+Largura: 130cm
+Altura: 190cm
+
+Módulo menor:
+Profundidade: 37cm
+Largura: 65cm
+Altura: 190cm
+

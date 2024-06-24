@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="icone-medizata.png" />
+    <title>Medizata - Endereço</title>
+	
+    <style>
+        .panorama-container {
+            width: 100%; /* Largura da área de visualização */
+            height: 98vh; /* Altura da área de visualização */
+            overflow-x: hidden; /* Oculta a barra de rolagem horizontal */
+            overflow-y: hidden; /* Oculta a barra de rolagem vertical */
+            scroll-snap-type: x mandatory; /* Rolar apenas na direção horizontal */
+        }
+
+        .panorama-image {
+            /*width: 800px;  Largura da imagem panorâmica */
+            height: 100%;
+            scroll-snap-align: start; /* Alinhe ao início da imagem */
+            transition: transform 0.3s ease; /* Adiciona transição para uma rolagem suave */
+        }
+    </style>
+	<script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+	
+	    <!-- Inclua o arquivo CSS externo -->
+    <link rel="stylesheet" type="text/css" href="sharestyles.css">
+	
+</head>
+<body>
+
+    <!-- Cabeçalho com a logo -->
+    <div id="header-container"></div>
+
+	<p class="BodyText" valign="top">Clique nos ícones das redes sociais acima para entrar em contato.</p>
+	<p class="BodyText" valign="top">Se você deseja nos fazer uma visita agende um horário porque se estivermos em um serviço externo não terá ninguém para atende-lo na marcenaria.</p>
+	
+	    <!-- Rodapé -->
+    <div id="footer-container"></div>
+	
+	<script src="components.js"></script>
+	
+    <script>
+        loadHeader(); // Carrega o cabeçalho
+        loadFooter(); // Carrega o rodapé
+    </script>
+	
+</body>
+</html>

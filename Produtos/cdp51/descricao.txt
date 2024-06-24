@@ -1,0 +1,3 @@
+Profundidade: 50cm
+Largura: 120cm
+Altura: 75cm

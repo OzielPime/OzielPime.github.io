@@ -1,1 +1,26 @@
-"Hello World" 
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+
+    <meta http-equiv="refresh" content="0; URL='the4k.php'"/>
+	
+</head>
+<body>
+
+<?php
+	  $arquivo=fopen("contador de acessos.txt","r");
+
+		$acessos=fread($arquivo,8);
+
+		$acessos++;
+
+		$arquivo=fopen("contador de acessos.txt","w");
+
+		fwrite($arquivo,$acessos);
+		fclose($arquivo);
+?>
+
+</body>
+</html>

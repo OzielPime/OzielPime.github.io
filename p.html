@@ -65,7 +65,7 @@
         </a>
 		
 		<div class="BodyText" valign="top">
-		Geralmente o preço acima é para o cliente retirar o produto no endereço da marcenaria Medizata, caso o cliente deseje a entrega é cobrado mais um valor aproximado de 50 reais para entregar em qualquer endereço da cidade, a entrega não tem um valor fixo por ser terceirizada.<br>
+		Frete não incluso. O valor de entrega é entre 40 e 60 reais.
 		</div>
 		
     <div class="Subtitulos" valign="top" scrolling="auto">Descrição</div>
@@ -88,8 +88,9 @@
         // Obtém os parâmetros da URL
         const params = new URLSearchParams(window.location.search);
 
-        // Obtém o valor do parâmetro 'nome' na URL
+        // Obtém o valor do parâmetro 'cdp' na URL
         const cdpdaUrl = params.get('cdp');
+		console.log("cdpdaUrl:"+cdpdaUrl);
 
         async function loadCarrosselp() {
 
@@ -102,7 +103,7 @@
             // Percorre todas as imagens e atualiza o atributo src com a variável cdp
             imagensCarrossel.forEach((imagem) => {
                 const nomeImagem = imagem.getAttribute('src');
-                imagem.src = "produtos/" + cdpdaUrl + "/" + nomeImagem;
+                imagem.src = "Produtos/" + cdpdaUrl + "/" + nomeImagem;
             });
 
             // Inicializa o carrossel
@@ -123,7 +124,7 @@
         const precoProdutoElement = document.getElementById('precoDoProduto');
 
         // Use o Fetch para obter o nome do produto.
-        fetch("produtos/" + cdpdaUrl + "/info.txt")
+        fetch("Produtos/" + cdpdaUrl + "/info.txt")
             .then(response => response.text())
             .then(data => {
                 const linhas = data.split('\n');
@@ -161,7 +162,7 @@
         // Função para carregar o arquivo de descrição
         function carregarDescricao() {
             // Caminho para o arquivo de descrição
-            const arquivoDescricao = "produtos/" + cdpdaUrl + "/descricao.txt";
+            const arquivoDescricao = "Produtos/" + cdpdaUrl + "/descricao.txt";
 
             // Faz uma requisição para o arquivo de descrição
             fetch(arquivoDescricao)

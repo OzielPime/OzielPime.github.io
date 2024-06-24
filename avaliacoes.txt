@@ -1,5 +1,68 @@
 {
-  "error_message": "This IP, site or mobile application is not authorized to use this API key. Request received from IP address 45.160.182.129, with empty referer",
   "html_attributions": [],
-  "status": "REQUEST_DENIED"
+  "result": {
+    "reviews": [
+      {
+        "author_name": "Fellipe Soares",
+        "author_url": "https://www.google.com/maps/contrib/105025790099735021316/reviews",
+        "language": "pt",
+        "original_language": "pt",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjVHs3CDBLG-s7VuyfHr64uLIZtSgaPCIHRu_Ghp48AIHFsxg4nz=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "4 meses atrás",
+        "text": "Atendeu exatamente nossas necessidades, móvel bem feito e bom atendimento. Recomendo.",
+        "time": 1705924965,
+        "translated": false
+      },
+      {
+        "author_name": "Isabella Costa de Mello",
+        "author_url": "https://www.google.com/maps/contrib/112254871273953367960/reviews",
+        "language": "pt",
+        "original_language": "pt",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjV6YMH-t1-2yDmE_WxDlLpG3FUzwHhcXPLBPpVas4zlP3I0xalg=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "8 meses atrás",
+        "text": "Ótimo trabalho e atendimento. Entrega no prazo, com muito profissionalismo. Pretendo fazer negócios mais vezes. Recomendo muito.",
+        "time": 1695425854,
+        "translated": false
+      },
+      {
+        "author_name": "Nataliane Lopes",
+        "author_url": "https://www.google.com/maps/contrib/114458397249472052156/reviews",
+        "language": "pt",
+        "original_language": "pt",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjV9gGsKw0muYGH_ioyQD9EZwFQVSDtaR7tJUia6F9rEupoOtnei=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "10 meses atrás",
+        "text": "Atendimento excelente, serviço de qualidade recomendo",
+        "time": 1690581946,
+        "translated": false
+      },
+      {
+        "author_name": "Edson biscaia machado",
+        "author_url": "https://www.google.com/maps/contrib/110224382017569426163/reviews",
+        "language": "pt",
+        "original_language": "pt",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocKvJ5UvQ5tNQpZpoXYzy7NHljYIP6JjHXfhfI7JUyJrciofjw=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "7 meses atrás",
+        "text": "Recomendo. Pedido atendeu as espectativas. Bom trabalho.",
+        "time": 1696610843,
+        "translated": false
+      },
+      {
+        "author_name": "Manu Oliveira",
+        "author_url": "https://www.google.com/maps/contrib/104310160847002357812/reviews",
+        "language": "pt",
+        "original_language": "pt",
+        "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocKjSoekF4fWTdBWSU52roXk-PK29Vxmgj4yiSRiFu5j3safOw=s128-c0x00000000-cc-rp-mo",
+        "rating": 5,
+        "relative_time_description": "6 meses atrás",
+        "text": "Excelente trabalho, Recomendo.",
+        "time": 1699371640,
+        "translated": false
+      }
+    ]
+  },
+  "status": "OK"
 }

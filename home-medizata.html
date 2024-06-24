@@ -28,8 +28,7 @@
         .ProdutoNoCarrossel {
             margin-top: 5px; /* Espaçamento entre a imagem e o preço */
             font-size: 18px;
-            font-weight: bold;
-            
+            font-weight: bold;           
         }
 
         .ProdutoNoCarrossel-nomeProduto {
@@ -105,6 +104,8 @@
             z-index: 1000;
         }
 		
+		
+		
     </style>
 
     <!-- Inclua seus scripts JavaScript aqui -->
@@ -119,11 +120,7 @@
     <section>
         <!-- Apresentação -->
 
-        <p class="BodyText" valign="top"><span id="snomeSalvo"></span>Somos especialistas em transformar suas ideias em realidade, criando móveis planejados únicos que se encaixam perfeitamente em sua casa ou comércio. Nossa paixão pelo trabalho nos permite oferecer qualidade excepcional a preços competitivos, nosso compromisso é entregar móveis feitos com talento e capricho, superando suas expectativas.</p>
-
-        <p class="BodyText" valign="top">Nosso diferencial está na dedicação total a cada projeto, utilizando nossa criatividade e precisão para alcançar resultados impressionantes. Além disso, contamos com um software exclusivo de precificação, buscando o nosso crescimento e o melhor custo-benefício para você.</p>
-
-        <p class="BodyText" valign="top">Com projetos 3D personalizados, transformamos suas inspirações em modelos tangíveis, proporcionando uma experiência visual envolvente antes mesmo de começarmos a construção.</p>
+        <p class="BodyText" valign="top"><span id="snomeSalvo"></span>Somos especialistas em transformar suas ideias em realidade, fazemos móveis sob medida que se encaixam perfeitamente em sua casa ou comércio. Nossa paixão pelo trabalho nos permite oferecer qualidade excepcional a preços competitivos, nosso compromisso é entregar móveis feitos com talento e capricho, superando suas expectativas.</p>
 
     </section>
 
@@ -137,17 +134,18 @@
 
     <section>
 
-        <p class="BodyText" valign="top">Explore nossos trabalhos para encontrar o que mais te atende, mas se precisar de algo totalmente diferente sinta-se à vontade para nos enviar suas referências encontradas na internet. Nós garantiremos que cada móvel seja único e projetado especialmente para você.</p>
+        <p class="BodyText" valign="top">Nosso diferencial está na dedicação total a cada projeto, utilizando nossa precisão para alcançar resultados impressionantes.</p>
 
-        <p class="BodyText" valign="top">Entre em contato conosco para iniciar uma jornada rumo a ambientes mais funcionais, belos e acolhedores. Estamos ansiosos para criar algo especial para você!</p>
+        <!-- <p class="BodyText" valign="top">Com projetos 3D personalizados proporcionamos uma experiência visual antes mesmo de começarmos a construção.</p> -->
 
-        <p class="BodyText" valign="top">Confira alguns dos produtos no <a href="https://www.facebook.com/marketplace/profile/100005727309978/?ref=share_attachment" title="Veja no Facebook" target="_blank" class="BodyText">Marketplace</a></p>
+        <p class="BodyText" valign="top">Explore nossos trabalhos para encontrar o que mais te atende, mas se precisar de algo diferente sinta-se à vontade para nos enviar referências encontradas na internet. Estamos ansiosos para criar algo especial para você!</p>
 
     </section>
 
     <section>
 
-        <p class="BodyText" id="vendasText" valign="top">Já são <span id="numeroVendas">dezenas de</span> vendas realizadas desde janeiro de 2023.</p>
+        <p class="BodyText" id="vendasText" valign="top">A marcenaria Medizata fez <span id="numeroVendas">dezenas de</span> vendas desde janeiro de 2023, 
+		com os botões das redes sociais acima você pode ver mais produtos que não estão neste site.</p>
 
     </section>
 	
@@ -183,7 +181,7 @@
 		<p class="BodyText" valign="top"><a href="https://g.page/r/Ccj8TePTDdZfEBM/review" target="_blank" class="BodyText-links">Avalie-nos</a></p>
             <div class="maps-reviews-stars"></div>		
         </div>
-		<!-- <p class="BodyText" valign="top"><a href="https://maps.app.goo.gl/7qpLpYxkqv2H5bBa6" title="Veja mais avaliações" target="_blank" class="BodyText-links">...Ver mais</a></p> -->
+		<p class="BodyText" valign="top"><a href="https://maps.app.goo.gl/7qpLpYxkqv2H5bBa6" title="Veja mais avaliações" target="_blank" class="BodyText-links">...Ver mais</a></p>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -252,7 +250,7 @@
 
     </script>
 
-    <!--<script src="api-maps-json.js"></script>-->
+    <script src="api-maps-json.js"></script>
 
     <section>
         <!-- Conteúdo da seção 2 -->
@@ -277,16 +275,16 @@
     const dataModificacaoAtual = new Date(document.lastModified).toLocaleDateString();
     const dataModificacaoSalva = localStorage.getItem('dataModificacaoPoliticaPrivacidade');
 
-console.log("aceitouPolitica:"+aceitouPolitica);
-console.log("dataModificacaoAtual:"+dataModificacaoAtual);
-console.log("dataModificacaoSalva:"+dataModificacaoSalva);
+//console.log("aceitouPolitica:"+aceitouPolitica);
+//console.log("dataModificacaoAtual:"+dataModificacaoAtual);
+//console.log("dataModificacaoSalva:"+dataModificacaoSalva);
 
     if (<!-- !aceitouPolitica || --> 
 	dataModificacaoAtual != dataModificacaoSalva) {
 
         // Exibir o pop-up automaticamente após um atraso (por exemplo, 5 segundos)
         setTimeout(function() {
-            document.getElementById('popup').style.display = 'block';
+            //document.getElementById('popup').style.display = 'block';
         }, 5000); // 5000 milissegundos = 5 segundos// Exibe o pop-up da política de privacidade
         
 		}
@@ -317,6 +315,18 @@ console.log("dataModificacaoSalva:"+dataModificacaoSalva);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 
     <script>
+	
+	let slidesToShow = 3;
+	let slidesToScroll = 3;
+
+    if (window.matchMedia("(orientation: portrait)").matches) {
+        slidesToShow = 1;
+        slidesToScroll = 1;
+    } else {
+        slidesToShow = 3;
+        slidesToScroll = 3;
+    }
+			
         // Função para carregar o carrossel com base nos dados do arquivo de texto
         async function loadCarrossel() {
             // Localização do arquivo de texto
@@ -341,17 +351,31 @@ console.log("dataModificacaoSalva:"+dataModificacaoSalva);
                     try {
                         const response = await fetch(infoTxtUrl);
                         const infoData = await response.text();
-                        const [nomeProduto, preco] = infoData.trim().split("\n");
+                        const [nomeProduto, precoOriginal, dataModificacao] = infoData.trim().split("\n");
+						let preco = precoOriginal; // Use let para que a variável possa ser alterada
+
+						const dataAtual = obterDataAtual();//Date.now();//
+						
+    const diff = Math.abs(dataAtual - dataModificacao);
+    const diffDias = Math.ceil(diff / ( 60 * 60 * 24)); // Diferença em dias
+
+	if (diffDias > 7) {
+		//preco = "~" + preco; // Alterar o valor da variável 'preco'
+	}
+
+	let minutospassados=diff/60;
+
+						console.log("dataAtual:"+dataAtual+" dataModificacao:"+dataModificacao+" cdp:"+pastaCDP+" com diff:"+diff+" e diffDias:"+diffDias+ ". minutos "+minutospassados);
 
                         // Cria o slide (imagem + preço)
                         const slide = document.createElement("div");
+						slide.className = "slide"; // Adiciona a classe "slide" à div criada
                         slide.innerHTML = `
                                     <a href="p.html?cdp=${pastaCDP}">
-                                        <img src="Produtos/${pastaCDP}/thumb.png" />
-                                    </a>
-                                    <p class="ProdutoNoCarrossel-nomeProduto">${nomeProduto}</p>
-                                    <p class="ProdutoNoCarrossel-precoProduto">${"R$ "+preco}</p>
-                                        `;
+                                        <img src="Produtos/${pastaCDP}/thumb.png" />						
+										<p class="ProdutoNoCarrossel-nomeProduto">${nomeProduto}</p>
+										<p class="ProdutoNoCarrossel-precoProduto">${"R$ "+preco}</p>
+                                    </a>    `;
 
                         // Adiciona o slide ao carrossel
                         carrossel.appendChild(slide);
@@ -366,8 +390,8 @@ console.log("dataModificacaoSalva:"+dataModificacaoSalva);
                     arrows: true,
                     infinite: true,
                     speed: 500,
-                    slidesToShow: 3,
-                    slidesToScroll: 3
+                    slidesToShow: slidesToShow,
+                    slidesToScroll: slidesToScroll
                 });
 
                 // Adiciona o ouvinte de clique em cada imagem do carrossel
@@ -387,8 +411,14 @@ console.log("dataModificacaoSalva:"+dataModificacaoSalva);
 
         // Carrega o carrossel quando a página estiver pronta
         document.addEventListener("DOMContentLoaded", loadCarrossel);
+
+function obterDataAtual() {
+    const data = new Date();
+    return Math.floor(data.getTime()/1000 ); // Retorna a data atual em segundos
+}
+
     </script>
-	
+		
 	<!-- Popup do nome -->
 	<div id="popupNomeCliente">
         <p>Olá! Qual é o seu nome?</p>
@@ -401,6 +431,7 @@ console.log("dataModificacaoSalva:"+dataModificacaoSalva);
         loadHeader(); // Carrega o cabeçalho
         loadFooter(); // Carrega o rodapé		
     </script>
+		
 		
 	<script>
 	
@@ -457,10 +488,10 @@ console.log("dataModificacaoSalva:"+dataModificacaoSalva);
 
             // Se o nome não estiver salvo, mostra o pop-up
             if (!nomeSalvo) {
-				mostrarPopup();
+				//mostrarPopup();
             } else {
                 // Se o nome estiver salvo, mostra na mensagem
-                mostrarNomeSalvo();
+                //mostrarNomeSalvo();
             }			
         };
 		//mostrarPopup();

@@ -31,6 +31,19 @@ nav a {
         /*height: auto;*/
     }
 
+/* Estilo para o contorno branco com cantos arredondados */
+.slide {
+	position: relative;
+    border: 2px solid white; /* Define a largura, o estilo e a cor do contorno */
+    border-radius: 10px; /* Define o raio dos cantos para criar os cantos arredondados */
+    overflow: hidden; /* Esconde qualquer conteúdo que ultrapasse o contorno */
+}
+
+	.slide img {
+		max-width: 100%; /* Limita a largura da imagem ao contorno */
+		display: block; /* Garante que a imagem seja tratada como bloco */
+	}
+
 /* Estilos para as seções */
 section {
     padding: 20px;

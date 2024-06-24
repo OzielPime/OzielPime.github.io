@@ -1,0 +1,5 @@
+Com suporte para pano de prato
+
+Profundidade: 12cm
+Largura: 33cm
+Altura: 31cm
