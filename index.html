@@ -9,18 +9,5 @@
 </head>
 <body>
 
-<?php
-	  $arquivo=fopen("contador de acessos.txt","r");
-
-		$acessos=fread($arquivo,8);
-
-		$acessos++;
-
-		$arquivo=fopen("contador de acessos.txt","w");
-
-		fwrite($arquivo,$acessos);
-		fclose($arquivo);
-?>
-
 </body>
 </html>
