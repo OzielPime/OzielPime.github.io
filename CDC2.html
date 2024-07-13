@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ListView Example</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        .controls {
+            margin-top: 10px;
+        }
+        #totalTwentyPercent {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>ListView Example</h1>
+    <div id="totalSobras">Total das Sobras: R$0,00</div>
+	<div id="totalTwentyPercent">20% do Total das Sobras: R$0,00</div>
+    <table id="listView">
+        <thead>
+            <tr>
+                <th>medidaC1</th>
+                <th>medidaC2</th>
+                <th>nome cor</th>
+                <th>medidaD1</th>
+                <th>medidaD2</th>
+                <th>preço comprada</th>
+                <th>Quantidade</th>
+                <th>Preço da Sobra</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be added here -->
+        </tbody>
+    </table>
+    <div class="controls">
+        <input type="text" id="medidaC1" placeholder="medidaC1">
+        <input type="text" id="medidaC2" placeholder="medidaC2">
+        <input type="text" id="nomeCor" placeholder="nome cor">
+        <input type="text" id="medidaD1" placeholder="medidaD1">
+        <input type="text" id="medidaD2" placeholder="medidaD2">
+        <input type="text" id="precoComprada" placeholder="preço comprada">
+        <button onclick="addItem()">Adicionar</button>
+        <button onclick="saveEdit()" id="saveButton" style="display:none;">Salvar</button>
+    </div>
+
+    <h2>Padrões</h2>
+    <table id="patterListView">
+        <thead>
+            <tr>
+                <th>medidaC1</th>
+                <th>medidaC2</th>
+                <th>nome cor</th>
+                <th>preço comprada</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Pattern rows will be added here -->
+        </tbody>
+    </table>
+
+    <script>
+        let editIndex = -1;
+
+        function calculateSobras(medidaC1, medidaC2, medidaD1, medidaD2, precoComprada) {
+            const areaChapa = medidaC1 * medidaC2;
+            const areaSobra = medidaD1 * medidaD2;
+            const precoUnitario = precoComprada / areaChapa;
+            return (areaSobra * precoUnitario).toFixed(2);
+        }
+
+function addItem() {
+    const medidaC1 = parseFloat(document.getElementById('medidaC1').value);
+    const medidaC2 = parseFloat(document.getElementById('medidaC2').value);
+    const nomeCor = document.getElementById('nomeCor').value;
+    const medidaD1 = parseFloat(document.getElementById('medidaD1').value);
+    const medidaD2 = parseFloat(document.getElementById('medidaD2').value);
+    const precoComprada = parseFloat(document.getElementById('precoComprada').value);
+
+    if (!isNaN(medidaC1) && !isNaN(medidaC2) && nomeCor && !isNaN(medidaD1) && !isNaN(medidaD2) && !isNaN(precoComprada)) {
+        const precoSobra = calculateSobras(medidaC1, medidaC2, medidaD1, medidaD2, precoComprada);
+        const table = document.getElementById('listView').getElementsByTagName('tbody')[0];
+        const existingRow = findRow(medidaC1, medidaC2, nomeCor, medidaD1, medidaD2, precoComprada);
+
+        if (existingRow) {
+            const quantityCell = existingRow.cells[6];
+            quantityCell.innerText = parseInt(quantityCell.innerText) + 1;
+        } else {
+            const newRow = table.insertRow();
+            newRow.innerHTML = `
+                <td>${medidaC1}</td>
+                <td>${medidaC2}</td>
+                <td>${nomeCor}</td>
+                <td>${medidaD1}</td>
+                <td>${medidaD2}</td>
+                <td>${precoComprada}</td>
+                <td>1</td>
+                <td>R$${precoSobra}</td>
+                <td>
+                    <button onclick="editItem(this)">Editar</button>
+                    <button onclick="removeItem(this)">Remover</button>
+                    <button onclick="duplicateItem(this)">Duplicar</button>
+                </td>
+            `;
+            // Adiciona o padrão ao padrão listView
+            addPattern(medidaC1, medidaC2, nomeCor, precoComprada);
+        }
+
+        updateTotalSobras();
+        clearInputs();
+    } else {
+        alert('Por favor, preencha todos os campos corretamente.');
+    }
+}
+
+
+        function findRow(medidaC1, medidaC2, nomeCor, medidaD1, medidaD2, precoComprada) {
+            const table = document.getElementById('listView').getElementsByTagName('tbody')[0];
+            for (let i = 0; i < table.rows.length; i++) {
+                const row = table.rows[i];
+                if (parseFloat(row.cells[0].innerText) === medidaC1 &&
+                    parseFloat(row.cells[1].innerText) === medidaC2 &&
+                    row.cells[2].innerText === nomeCor &&
+                    parseFloat(row.cells[3].innerText) === medidaD1 &&
+                    parseFloat(row.cells[4].innerText) === medidaD2 &&
+                    parseFloat(row.cells[5].innerText) === precoComprada) {
+                    return row;
+                }
+            }
+            return null;
+        }
+
+        function editItem(button) {
+            const row = button.parentNode.parentNode;
+            const cells = row.getElementsByTagName('td');
+
+            document.getElementById('medidaC1').value = cells[0].innerText;
+            document.getElementById('medidaC2').value = cells[1].innerText;
+            document.getElementById('nomeCor').value = cells[2].innerText;
+            document.getElementById('medidaD1').value = cells[3].innerText;
+            document.getElementById('medidaD2').value = cells[4].innerText;
+            document.getElementById('precoComprada').value = cells[5].innerText;
+
+            editIndex = row.rowIndex - 1;
+            document.getElementById('saveButton').style.display = 'inline-block';
+        }
+
+        function saveEdit() {
+            const medidaC1 = parseFloat(document.getElementById('medidaC1').value);
+            const medidaC2 = parseFloat(document.getElementById('medidaC2').value);
+            const nomeCor = document.getElementById('nomeCor').value;
+            const medidaD1 = parseFloat(document.getElementById('medidaD1').value);
+            const medidaD2 = parseFloat(document.getElementById('medidaD2').value);
+            const precoComprada = parseFloat(document.getElementById('precoComprada').value);
+
+            if (!isNaN(medidaC1) && !isNaN(medidaC2) && nomeCor && !isNaN(medidaD1) && !isNaN(medidaD2) && !isNaN(precoComprada)) {
+                const precoSobra = calculateSobras(medidaC1, medidaC2, medidaD1, medidaD2, precoComprada);
+                const table = document.getElementById('listView').getElementsByTagName('tbody')[0];
+                const row = table.rows[editIndex];
+
+                row.cells[0].innerText = medidaC1;
+                row.cells[1].innerText = medidaC2;
+                row.cells[2].innerText = nomeCor;
+                row.cells[3].innerText = medidaD1;
+                row.cells[4].innerText = medidaD2;
+                row.cells[5].innerText = precoComprada;
+                row.cells[7].innerText = `R$${precoSobra}`;
+
+                updateTotalSobras();
+                clearInputs();
+                document.getElementById('saveButton').style.display = 'none';
+                editIndex = -1;
+            } else {
+                alert('Por favor, preencha todos os campos corretamente.');
+            }
+        }
+
+        function removeItem(button) {
+            const row = button.parentNode.parentNode;
+            const quantityCell = row.cells[6];
+            const quantity = parseInt(quantityCell.innerText);
+
+            if (quantity > 1) {
+                quantityCell.innerText = quantity - 1;
+            } else {
+                row.parentNode.removeChild(row);
+            }
+
+            updateTotalSobras();
+        }
+
+        function duplicateItem(button) {
+            const row = button.parentNode.parentNode;
+            const cells = row.getElementsByTagName('td');
+
+            const medidaC1 = parseFloat(cells[0].innerText);
+            const medidaC2 = parseFloat(cells[1].innerText);
+            const nomeCor = cells[2].innerText;
+            const medidaD1 = parseFloat(cells[3].innerText);
+            const medidaD2 = parseFloat(cells[4].innerText);
+            const precoComprada = parseFloat(cells[5].innerText);
+            const precoSobra = parseFloat(cells[7].innerText.replace('R$', ''));
+
+            addItemWithQuantity(medidaC1, medidaC2, nomeCor, medidaD1, medidaD2, precoComprada, precoSobra, 1);
+        }
+
+        function addItemWithQuantity(medidaC1, medidaC2, nomeCor, medidaD1, medidaD2, precoComprada, precoSobra, quantity) {
+            const table = document.getElementById('listView').getElementsByTagName('tbody')[0];
+            const existingRow = findRow(medidaC1, medidaC2, nomeCor, medidaD1, medidaD2, precoComprada);
+
+            if (existingRow) {
+                const quantityCell = existingRow.cells[6];
+                quantityCell.innerText = parseInt(quantityCell.innerText) + quantity;
+            } else {
+                const newRow = table.insertRow();
+                newRow.innerHTML = `
+                    <td>${medidaC1}</td>
+                    <td>${medidaC2}</td>
+                    <td>${nomeCor}</td>
+                    <td>${medidaD1}</td>
+                    <td>${medidaD2}</td>
+                    <td>${precoComprada}</td>
+                    <td>${quantity}</td>
+                    <td>R$${precoSobra}</td>
+                    <td>
+                        <button onclick="editItem(this)">Editar</button>
+                        <button onclick="removeItem(this)">Remover</button>
+                        <button onclick="duplicateItem(this)">Duplicar</button>
+                    </td>
+                `;
+            }
+
+            updateTotalSobras();
+        }
+
+        function updateTotalSobras() {
+            const table = document.getElementById('listView').getElementsByTagName('tbody')[0];
+            let totalSobras = 0;
+
+            for (let i = 0; i < table.rows.length; i++) {
+                const precoSobra = parseFloat(table.rows[i].cells[7].textContent.replace('R$', ''));
+                const quantity = parseInt(table.rows[i].cells[6].innerText);
+                totalSobras += precoSobra * quantity;
+            }
+
+            document.getElementById('totalSobras').textContent = `Total das Sobras: R$${totalSobras.toFixed(2)}`;
+        }
+
+        function clearInputs() {
+            document.getElementById('medidaC1').value = '';
+            document.getElementById('medidaC2').value = '';
+            document.getElementById('nomeCor').value = '';
+            document.getElementById('medidaD1').value = '';
+            document.getElementById('medidaD2').value = '';
+            document.getElementById('precoComprada').value = '';
+        }
+
+        function loadPattern(pattern) {
+            document.getElementById('medidaC1').value = pattern.medidaC1;
+            document.getElementById('medidaC2').value = pattern.medidaC2;
+            document.getElementById('nomeCor').value = pattern.nomeCor;
+            document.getElementById('precoComprada').value = pattern.precoComprada;
+        }
+
+function addPattern(medidaC1, medidaC2, nomeCor, precoComprada) {
+    const table = document.getElementById('patterListView').getElementsByTagName('tbody')[0];
+    const newRow = table.insertRow();
+
+    newRow.innerHTML = `
+        <td>${medidaC1}</td>
+        <td>${medidaC2}</td>
+        <td>${nomeCor}</td>
+        <td>${precoComprada}</td>
+        <td>
+            <button onclick="usePattern(this)">Usar</button>
+            <button onclick="removePattern(this)">Remover</button>
+        </td>
+    `;
+}
+
+function removePattern(button) {
+    const row = button.parentNode.parentNode;
+    row.parentNode.removeChild(row);
+    updateTotalSobras(); // Atualiza o total das sobras se necessário
+}
+
+function updateTotalSobras() {
+    const table = document.getElementById('listView').getElementsByTagName('tbody')[0];
+    let totalSobras = 0;
+
+    for (let i = 0; i < table.rows.length; i++) {
+        const precoSobra = parseFloat(table.rows[i].cells[7].textContent.replace('R$', ''));
+        const quantity = parseInt(table.rows[i].cells[6].innerText);
+        totalSobras += precoSobra * quantity;
+    }
+
+    const totalSobrasDiv = document.getElementById('totalSobras');
+    totalSobrasDiv.textContent = `Total das Sobras: R$${totalSobras.toFixed(2)}`;
+
+    const twentyPercentDiv = document.getElementById('totalTwentyPercent');
+    twentyPercentDiv.textContent = `20% do Total das Sobras: R$${(totalSobras * 0.2).toFixed(2)}`;
+}
+
+
+        function usePattern(button) {
+            const row = button.parentNode.parentNode;
+            const cells = row.getElementsByTagName('td');
+
+            const pattern = {
+                medidaC1: cells[0].innerText,
+                medidaC2: cells[1].innerText,
+                nomeCor: cells[2].innerText,
+                precoComprada: cells[3].innerText,
+            };
+
+            loadPattern(pattern);
+        }
+
+        // Add default patterns
+        addPattern(183, 273, '', 300.00);
+        // Add more patterns as needed
+    </script>
+</body>
+</html>
