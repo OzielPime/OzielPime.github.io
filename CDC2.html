@@ -33,11 +33,11 @@
     <table id="listView">
         <thead>
             <tr>
-                <th>medidaC1</th>
-                <th>medidaC2</th>
+                <th>Med 1 Comp</th>
+                <th>Med 2 Comp</th>
                 <th>nome cor</th>
-                <th>medidaD1</th>
-                <th>medidaD2</th>
+                <th>Med 1 Sobra</th>
+                <th>Med 2 Sobra</th>
                 <th>preço comprada</th>
                 <th>Quantidade</th>
                 <th>Preço da Sobra</th>
@@ -49,12 +49,13 @@
         </tbody>
     </table>
     <div class="controls">
-        <input type="number" inputmode="numeric" id="medidaC1" placeholder="medidaC1">
-        <input type="number" inputmode="numeric"  id="medidaC2" placeholder="medidaC2">
+        <input type="number" inputmode="numeric" id="medidaC1" placeholder="Med 1 Comp">
+        <input type="number" inputmode="numeric"  id="medidaC2" placeholder="Med 2 Comp">
         <input type="text" id="nomeCor" placeholder="nome cor">
-        <input type="number" inputmode="numeric"  id="medidaD1" placeholder="medidaD1">
-        <input type="number" inputmode="numeric"  id="medidaD2" placeholder="medidaD2">
         <input type="number" inputmode="decimal" step="0.01" min="0" id="precoComprada" placeholder="preço comprada">
+        <input type="number" inputmode="numeric"  id="medidaD1" placeholder="Med 1 Sobra">
+        <input type="number" inputmode="numeric"  id="medidaD2" placeholder="Med 2 Sobra">
+
         <button onclick="addItem()">Adicionar</button>
         <button onclick="saveEdit()" id="saveButton" style="display:none;">Salvar</button>
     </div>
@@ -63,8 +64,8 @@
     <table id="patterListView">
         <thead>
             <tr>
-                <th>medidaC1</th>
-                <th>medidaC2</th>
+                <th>Med 1 Comp</th>
+                <th>Med 2 Comp</th>
                 <th>nome cor</th>
                 <th>preço comprada</th>
                 <th>Actions</th>
@@ -325,7 +326,7 @@ function updateTotalSobras() {
 		
 function exportToTabSeparated() {
     const table = document.getElementById('listView').getElementsByTagName('tbody')[0];
-    let data = 'medidaC1\tmedidaC2\tnome cor\tmedidaD1\tmedidaD2\tpreço comprada\tQuantidade\n'; // Cabeçalho (sem a coluna de Preço da Sobra)
+    let data = 'Med 1 Comp\tMed 2 Comp\tnome cor\tmedidaD1\tmedidaD2\tpreço comprada\tQuantidade\n'; // Cabeçalho (sem a coluna de Preço da Sobra)
 
     for (let i = 0; i < table.rows.length; i++) {
         const row = table.rows[i];
