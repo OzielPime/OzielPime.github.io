@@ -23,7 +23,11 @@
     </style>
 </head>
 <body>
-    <h1>ListView Example</h1>
+    <h1>Cálculo de sobras</h1>
+	<div>
+		<button onclick="exportToTabSeparated()">Exportar Sobras</button>
+		<input type="file" id="fileInput" accept=".txt" onchange="loadFromFile(event)">
+	</div>
     <div id="totalSobras">Total das Sobras: R$0,00</div>
 	<div id="totalTwentyPercent">20% do Total das Sobras: R$0,00</div>
     <table id="listView">
@@ -45,17 +49,17 @@
         </tbody>
     </table>
     <div class="controls">
-        <input type="text" id="medidaC1" placeholder="medidaC1">
-        <input type="text" id="medidaC2" placeholder="medidaC2">
+        <input type="number" inputmode="numeric" id="medidaC1" placeholder="medidaC1">
+        <input type="number" inputmode="numeric"  id="medidaC2" placeholder="medidaC2">
         <input type="text" id="nomeCor" placeholder="nome cor">
-        <input type="text" id="medidaD1" placeholder="medidaD1">
-        <input type="text" id="medidaD2" placeholder="medidaD2">
-        <input type="text" id="precoComprada" placeholder="preço comprada">
+        <input type="number" inputmode="numeric"  id="medidaD1" placeholder="medidaD1">
+        <input type="number" inputmode="numeric"  id="medidaD2" placeholder="medidaD2">
+        <input type="number" inputmode="decimal" step="0.01" min="0" id="precoComprada" placeholder="preço comprada">
         <button onclick="addItem()">Adicionar</button>
         <button onclick="saveEdit()" id="saveButton" style="display:none;">Salvar</button>
     </div>
 
-    <h2>Padrões</h2>
+    <h2>Recentes</h2>
     <table id="patterListView">
         <thead>
             <tr>
@@ -245,19 +249,6 @@ function addItem() {
             updateTotalSobras();
         }
 
-        function updateTotalSobras() {
-            const table = document.getElementById('listView').getElementsByTagName('tbody')[0];
-            let totalSobras = 0;
-
-            for (let i = 0; i < table.rows.length; i++) {
-                const precoSobra = parseFloat(table.rows[i].cells[7].textContent.replace('R$', ''));
-                const quantity = parseInt(table.rows[i].cells[6].innerText);
-                totalSobras += precoSobra * quantity;
-            }
-
-            document.getElementById('totalSobras').textContent = `Total das Sobras: R$${totalSobras.toFixed(2)}`;
-        }
-
         function clearInputs() {
             document.getElementById('medidaC1').value = '';
             document.getElementById('medidaC2').value = '';
@@ -329,8 +320,68 @@ function updateTotalSobras() {
         }
 
         // Add default patterns
-        addPattern(183, 273, '', 300.00);
+        addPattern(183, 273, 'Cor', 300.00);
         // Add more patterns as needed
+		
+function exportToTabSeparated() {
+    const table = document.getElementById('listView').getElementsByTagName('tbody')[0];
+    let data = 'medidaC1\tmedidaC2\tnome cor\tmedidaD1\tmedidaD2\tpreço comprada\tQuantidade\n'; // Cabeçalho (sem a coluna de Preço da Sobra)
+
+    for (let i = 0; i < table.rows.length; i++) {
+        const row = table.rows[i];
+        data += Array.from(row.cells).slice(0, 8).map(cell => cell.innerText).join('\t') + '\n'; // Adiciona cada linha, exceto a última coluna
+    }
+
+    const blob = new Blob([data], { type: 'text/plain' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'sobras.txt'; // Nome do arquivo
+    link.click();
+}
+
+function loadFromFile(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        const content = e.target.result;
+        const lines = content.split('\n');
+
+        // Limpa a tabela antes de adicionar novos dados
+        const tableBody = document.getElementById('listView').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = '';
+
+        for (let i = 1; i < lines.length; i++) { // Começa de 1 para ignorar o cabeçalho
+            const line = lines[i].trim();
+            if (line === '') continue; // Ignora linhas vazias
+            const values = line.split('\t');
+
+            // Verifica se tem o número correto de colunas (7 para sobras)
+            if (values.length === 8) {
+                const newRow = tableBody.insertRow();
+                newRow.innerHTML = `
+                    <td>${values[0]}</td>
+                    <td>${values[1]}</td>
+                    <td>${values[2]}</td>
+                    <td>${values[3]}</td>
+                    <td>${values[4]}</td>
+                    <td>${values[5]}</td>
+                    <td>${values[6]}</td>
+					<td>${values[7]}</td>
+                    <td>
+                        <button onclick="editItem(this)">Editar</button>
+                        <button onclick="removeItem(this)">Remover</button>
+                        <button onclick="duplicateItem(this)">Duplicar</button>
+                    </td>
+                `;
+            }
+        }
+        updateTotalSobras(); // Atualiza o total após carregar os dados
+    };
+
+    reader.readAsText(file);
+}
+
     </script>
 </body>
 </html>
