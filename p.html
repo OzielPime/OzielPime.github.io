@@ -147,12 +147,22 @@
             //const nomeProduto = nomeProdutoElement.textContent;
 
             // Número do WhatsApp
-            const numeroWhatsApp = "554299738953";//"5542991467224";
+            //const numeroWhatsApp = "5542991467224";
 
              //somenteNumCodigo = cdpdaUrl.remove("cdp");
 
             // Monta o texto da mensagem
-            const mensagem = `Olá! Estou interessado no produto ${nomeProduto.trim()}, código ${cdpdaUrl}`;
+			
+			// Se o nome não estiver salvo
+			if (!nomeSalvo) {
+				//mostrarPopup();
+				mensagem = `Olá! Estou interessado no produto ${nomeProduto.trim()}, código ${cdpdaUrl}`;
+			} else {
+				// Se o nome estiver salvo
+				//mostrarNomeSalvo();
+				mensagem = `Olá! Me chamo ${nomeSalvo}, me interessei no produto ${nomeProduto.trim()}, código ${cdpdaUrl}`;
+			}
+            
 
             // Define o valor do atributo href da âncora
             const url = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${encodeURIComponent(mensagem)}`;
