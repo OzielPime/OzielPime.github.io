@@ -1,8 +1,8 @@
-const numeroWhatsApp= "5542999738953";//"5542991467224"
+const numeroWhatsApp= "5542991467224"
 var nomeSalvo = localStorage.getItem('nomeVisitante');
 var mensagem='';
 
-// FunÁ„o para carregar o cabeÁalho
+// Fun√ß√£o para carregar o cabe√ßalho
 function loadHeader() {
     const headerContainer = document.getElementById('header-container');
     const xhr = new XMLHttpRequest();
@@ -14,7 +14,7 @@ function loadHeader() {
             headerContainer.innerHTML = xhr.responseText;
 			
 				const whatsappLinkHeader = document.getElementById('botaoWhatsHeader');
-				// Se o nome n„o estiver salvo
+				// Se o nome n√£o estiver salvo
 				if (!nomeSalvo) {
 					//mostrarPopup();
 					mensagem = `Oi, eu vim do seu site`;
@@ -24,7 +24,7 @@ function loadHeader() {
 					mensagem = `Oi! Me chamo ${nomeSalvo}, eu vim do seu site`;
 				}				
 
-				// Define o valor do atributo href da ‚ncora"https://wa.me/message/3JE4GCAF6ERHP1";//
+				// Define o valor do atributo href da √¢ncora"https://wa.me/message/3JE4GCAF6ERHP1";//
 				const urlHeader = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${encodeURIComponent(mensagem)}`;
 				whatsappLinkHeader.href = urlHeader;
         }
@@ -37,7 +37,7 @@ function loadHeader() {
 
 }
 
-// FunÁ„o para carregar o rodapÈ
+// Fun√ß√£o para carregar o rodap√©
 function loadFooter() {
     const footerContainer = document.getElementById('footer-container');
     const xhr = new XMLHttpRequest();
@@ -53,7 +53,7 @@ function loadFooter() {
 
 
 function DadosDoCliente() {
-	// Se o nome n„o estiver salvo, mostra o pop-up
+	// Se o nome n√£o estiver salvo, mostra o pop-up
 	if (!nomeSalvo) {
 		mostrarPopup();
 	} else {
@@ -61,7 +61,7 @@ function DadosDoCliente() {
 		mostrarNomeSalvo();
 	}
 }
-		// Verifica se o nome do visitante j· foi salvo
+		// Verifica se o nome do visitante j√° foi salvo
         window.onload = function() {
             
 
