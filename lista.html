@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Produtos</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+	<script src="components.js"></script>
+	
+	    <!-- Inclua o arquivo CSS externo 
+    <link rel="stylesheet" type="text/css" href="sharestyles.css">-->
+	
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        #productForm {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        #productForm input[type="text"], 
+        #productForm input[type="number"], 
+        #productForm button {
+            flex: 1;
+        }
+        #productForm button {
+            padding: 10px;
+        }
+        #total {
+            font-weight: bold;
+            font-size: 18px;
+            text-align: right;
+        }
+        .faded {
+            opacity: 0.5;
+        }
+        #actions {
+            margin-bottom: 20px;
+        }
+        #importInput {
+            display: none;
+        }
+        .editable {
+            cursor: pointer;
+            background-color: #f9f9f9;
+        }
+        .editable input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cabeçalho com a logo -->
+    <div id="header-container"></div>
+	
+    <h1>Lista de Produtos</h1>
+
+    <form id="productForm">
+        <input type="text" id="productDescription" placeholder="Descrição do Produto" required>
+        <input type="number" id="productPrice" placeholder="Preço" min="0" step="0.01" required>
+        <input type="number" id="productQuantity" placeholder="Quantidade" min="1" required>
+        <button type="submit">Adicionar Produto</button>
+    </form>
+
+    <div id="actions">
+        <button id="exportBtn">Exportar Lista</button>
+        <button id="importBtn">Importar Lista</button>
+        <input type="file" id="importInput" accept=".csv">
+    </div>
+
+    <table id="productTable">
+        <thead>
+            <tr>
+                <th>Descrição do Produto</th>
+                <th>Preço</th>
+                <th>Quantidade</th>
+                <th>Subtotal</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div id="total">
+        TOTAL: R$ <span id="totalPrice">0.00</span>
+    </div>
+	
+	<div>
+        RDI_v3
+    </div>
+
+    <!-- Rodapé -->
+    <div id="footer-container"></div>
+
+    <script>
+        const productForm = document.getElementById('productForm');
+        const productTable = document.getElementById('productTable').querySelector('tbody');
+        const totalPriceElement = document.getElementById('totalPrice');
+        const exportBtn = document.getElementById('exportBtn');
+        const importBtn = document.getElementById('importBtn');
+        const importInput = document.getElementById('importInput');
+
+        let totalPrice = 0;
+
+        productForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const description = document.getElementById('productDescription').value.trim();
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const quantity = parseInt(document.getElementById('productQuantity').value);
+            const subtotal = price * quantity;
+
+            const row = createRow(description, price, quantity, subtotal);
+            productTable.appendChild(row);
+            updateTotalPrice(subtotal);
+
+            productForm.reset();
+        });
+
+        function createRow(description, price, quantity, subtotal) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="editable" data-type="description">${description}</td>
+                <td class="editable" data-type="price">R$ ${price.toFixed(2)}</td>
+                <td class="editable" data-type="quantity">${quantity}</td>
+                <td>R$ ${subtotal.toFixed(2)}</td>
+                <td>
+                    <input type="checkbox" class="includeProduct" checked>
+                    <button type="button" class="deleteBtn">Excluir</button>
+                </td>
+            `;
+
+            const includeCheckbox = row.querySelector('.includeProduct');
+            includeCheckbox.addEventListener('change', function() {
+                if (includeCheckbox.checked) {
+                    row.classList.remove('faded');
+                    updateTotalPrice(subtotal);
+                } else {
+                    row.classList.add('faded');
+                    updateTotalPrice(-subtotal);
+                }
+            });
+
+            row.querySelector('.deleteBtn').addEventListener('click', function() {
+                if (confirm('Tem certeza de que deseja excluir este item?')) {
+                    productTable.removeChild(row);
+                    if (includeCheckbox.checked) {
+                        updateTotalPrice(-subtotal);
+                    }
+                }
+            });
+
+            const editableCells = row.querySelectorAll('.editable');
+            editableCells.forEach(cell => {
+                cell.addEventListener('click', function() {
+                    if (!cell.querySelector('input')) {
+                        const originalValue = cell.textContent.replace('R$ ', '').trim();
+                        const input = document.createElement('input');
+                        input.type = (cell.dataset.type === 'price' || cell.dataset.type === 'quantity') ? 'number' : 'text';
+                        input.value = originalValue;
+                        input.min = cell.dataset.type === 'quantity' ? 1 : 0;
+                        input.step = cell.dataset.type === 'price' ? '0.01' : '1';
+
+                        cell.textContent = '';
+                        cell.appendChild(input);
+                        input.focus();
+
+                        input.addEventListener('blur', function() {
+                            const newValue = input.value;
+                            if (cell.dataset.type === 'description') {
+                                cell.textContent = newValue;
+                            } else if (cell.dataset.type === 'price') {
+                                const oldSubtotal = parseFloat(row.querySelector('td:nth-child(4)').textContent.replace('R$ ', ''));
+                                const newPrice = parseFloat(newValue);
+                                const quantity = parseInt(row.querySelector('td:nth-child(3)').textContent);
+                                const newSubtotal = newPrice * quantity;
+                                updateTotalPrice(newSubtotal - oldSubtotal);
+                                row.querySelector('td:nth-child(4)').textContent = `R$ ${newSubtotal.toFixed(2)}`;
+                                cell.textContent = `R$ ${newPrice.toFixed(2)}`;
+                            } else if (cell.dataset.type === 'quantity') {
+                                const oldSubtotal = parseFloat(row.querySelector('td:nth-child(4)').textContent.replace('R$ ', ''));
+                                const price = parseFloat(row.querySelector('td:nth-child(2)').textContent.replace('R$ ', ''));
+                                const newQuantity = parseInt(newValue);
+                                const newSubtotal = price * newQuantity;
+                                updateTotalPrice(newSubtotal - oldSubtotal);
+                                row.querySelector('td:nth-child(4)').textContent = `R$ ${newSubtotal.toFixed(2)}`;
+                                cell.textContent = newQuantity;
+                            }
+                        });
+
+                        input.addEventListener('keypress', function(e) {
+                            if (e.key === 'Enter') {
+                                input.blur();
+                            }
+                        });
+                    }
+                });
+            });
+
+            return row;
+        }
+
+        function updateTotalPrice(amount) {
+            totalPrice += amount;
+            totalPriceElement.textContent = totalPrice.toFixed(2);
+        }
+
+        exportBtn.addEventListener('click', function() {
+            let csvContent = "data:text/csv;charset=utf-8," 
+                + "Descrição do Produto,Preço,Quantidade,Subtotal\n";
+
+            const rows = productTable.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cols = row.querySelectorAll('td');
+                if (cols.length > 0) {
+                    const description = cols[0].innerText;
+                    const price = cols[1].innerText.replace('R$ ', '');
+                    const quantity = cols[2].innerText;
+                    const subtotal = cols[3].innerText.replace('R$ ', '');
+                    csvContent += `${description},${price},${quantity},${subtotal}\n`;
+                }
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', 'lista_de_produtos.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        importBtn.addEventListener('click', function() {
+            importInput.click();
+        });
+
+        importInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const lines = e.target.result.split('\n');
+                    for (let i = 1; i < lines.length; i++) { // Ignora o cabeçalho
+                        const line = lines[i].trim();
+                        if (line) {
+                            const [description, price, quantity, subtotal] = line.split(',');
+                            const row = createRow(description, parseFloat(price), parseInt(quantity), parseFloat(subtotal));
+                            productTable.appendChild(row);
+                            updateTotalPrice(parseFloat(subtotal));
+                        }
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+    </script>
+
+    <script>
+        loadHeader(); // Carrega o cabeçalho
+        //loadFooter(); // Carrega o rodapé		
+    </script>
+	
+</body>
+</html>
