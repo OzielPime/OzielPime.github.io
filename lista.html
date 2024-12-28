@@ -47,10 +47,25 @@
         #productForm button {
             padding: 10px;
         }
-        #total {
+        #total, #remaining {
             font-weight: bold;
             font-size: 18px;
             text-align: right;
+        }
+		#remaining {
+            margin-top: 10px;
+        }
+        .over-budget {
+            color: red;
+        }
+        #goalDisplay {
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        #goalDisplay span {
+            text-decoration: underline;
+            cursor: pointer;
+            color: blue;
         }
         .faded {
             opacity: 0.5;
@@ -78,6 +93,13 @@
 	
     <h1>Lista de Produtos</h1>
 
+    <!-- Formulário de meta de gastos 
+    <form id="goalForm">
+        <label for="goalInput">Meta de gastos (R$):</label>
+        <input type="number" id="goalInput" placeholder="Digite o valor máximo" min="0" step="0.01">
+        <button type="button" id="setGoalBtn">Definir Meta</button>
+    </form>-->
+	
     <form id="productForm">
         <input type="text" id="productDescription" placeholder="Descrição do Produto" required>
         <input type="number" id="productPrice" placeholder="Preço" min="0" step="0.01" required>
@@ -108,6 +130,10 @@
     <div id="total">
         TOTAL: R$ <span id="totalPrice">0.00</span>
     </div>
+    <div id="remaining">
+		RESTANTE: R$ <span id="remainingAmount">-</span>
+        <div id="goalDisplay">META: R$ <span id="goalValue" class="editable">0.00</span></div>
+    </div>
 	
 	<div>
         RDI_v3
@@ -124,8 +150,40 @@
         const importBtn = document.getElementById('importBtn');
         const importInput = document.getElementById('importInput');
 
+        const remainingAmountElement = document.getElementById('remainingAmount');
+		const goalValueElement = document.getElementById('goalValue');
+		
         let totalPrice = 0;
+        let spendingGoal = 0;
+		
+		// Permite editar a meta diretamente no texto
+        goalValueElement.addEventListener('click', function () {
+            const currentGoal = parseFloat(goalValueElement.textContent) || 0;
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.min = '0';
+            input.step = '0.01';
+            input.value = currentGoal.toFixed(2);
+            input.className = 'editable';
 
+            input.addEventListener('blur', function () {
+                spendingGoal = parseFloat(input.value) || 0;
+                goalValueElement.textContent = spendingGoal.toFixed(2);
+                goalValueElement.classList.remove('editable');
+                updateRemaining();
+            });
+
+            input.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    input.blur();
+                }
+            });
+
+            goalValueElement.textContent = '';
+            goalValueElement.appendChild(input);
+            input.focus();
+        });
+		
         productForm.addEventListener('submit', function(event) {
             event.preventDefault();
 
@@ -229,6 +287,18 @@
             totalPriceElement.textContent = totalPrice.toFixed(2);
         }
 
+		function updateRemaining() {
+            const remaining = spendingGoal - totalPrice;
+            remainingAmountElement.textContent = remaining.toFixed(2);
+
+            if (remaining < 0) {
+                remainingAmountElement.classList.add('over-budget');
+                alert('Atenção: Você ultrapassou o limite de gastos!');
+            } else {
+                remainingAmountElement.classList.remove('over-budget');
+            }
+        }
+		
         exportBtn.addEventListener('click', function() {
             let csvContent = "data:text/csv;charset=utf-8," 
                 + "Descrição do Produto,Preço,Quantidade,Subtotal\n";
