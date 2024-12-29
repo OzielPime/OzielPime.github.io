@@ -9,8 +9,15 @@
 		const remainingLabelElement = document.getElementById('remainingLabel');
 		const goalValueElement = document.getElementById('goalValue');
 		
+        // Obtém os parâmetros da URL
+        const params = new URLSearchParams(window.location.search);
+		// Obtém o valor do parâmetro 'cesta' na URL
+        const cestanaUrl = params.get('cesta');
+		
         let totalPrice = 0;
         let spendingGoal = 0;
+		
+		
 		
 		// Permite editar a meta diretamente no texto
         goalValueElement.addEventListener('click', function () {
@@ -218,3 +225,33 @@
                 reader.readAsText(file);
             }
         });
+
+		document.addEventListener("DOMContentLoaded", function () {
+		function loadProductsFromCSV(fileName) {
+		fetch(fileName)
+                .then((response) => {
+                    if (!response.ok) throw new Error("Erro ao carregar o arquivo CSV.");
+                    return response.text();
+                })
+                .then((csvText) => {
+                    const rows = csvText.split("\n").map((row) => row.split(","));
+                    rows.forEach((row) => {
+                        if (row.length >= 3) {
+                            const description = row[0].trim();
+                            const price = parseFloat(row[1].trim());
+                            const quantity = parseInt(row[2].trim());
+                            if (description && !isNaN(price) && !isNaN(quantity)) {
+                                //addProduct(description, price, quantity);
+								//subtotal=0.00;
+								createRow(description, parseFloat(price), parseInt(quantity), parseFloat(subtotal));
+                            }
+                        }
+                    });
+                })
+                .catch((error) => console.error("Erro ao carregar produtos do CSV:", error));
+				
+        }
+
+		loadProductsFromCSV("cestaGSovinski.csv");		
+		});
+		//if(cestanaUrl=="G") {loadProductsFromCSV("cestaGSovinski.csv");}
