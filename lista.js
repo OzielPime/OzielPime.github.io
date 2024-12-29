@@ -226,32 +226,50 @@
             }
         });
 
-		document.addEventListener("DOMContentLoaded", function () {
-		function loadProductsFromCSV(fileName) {
-		fetch(fileName)
-                .then((response) => {
-                    if (!response.ok) throw new Error("Erro ao carregar o arquivo CSV.");
-                    return response.text();
-                })
-                .then((csvText) => {
-                    const rows = csvText.split("\n").map((row) => row.split(","));
-                    rows.forEach((row) => {
-                        if (row.length >= 3) {
-                            const description = row[0].trim();
-                            const price = parseFloat(row[1].trim());
-                            const quantity = parseInt(row[2].trim());
-                            if (description && !isNaN(price) && !isNaN(quantity)) {
-                                //addProduct(description, price, quantity);
-								//subtotal=0.00;
-								createRow(description, parseFloat(price), parseInt(quantity), parseFloat(subtotal));
-                            }
-                        }
-                    });
-                })
-                .catch((error) => console.error("Erro ao carregar produtos do CSV:", error));
-				
-        }
 
-		loadProductsFromCSV("cestaGSovinski.csv");		
+
+					
+        // Função para carregar os produtos iniciais
+        function loadInitialData() {
+            initialData.forEach(([description, price, quantity, subtotal]) => {
+                //addProduct(description, price, quantity);
+				subtotal = price*quantity;
+				const row = createRow(description, parseFloat(price), parseInt(quantity), parseFloat(subtotal));
+				productTable.appendChild(row);
+				updateTotalPrice(subtotal);
+				productForm.reset();
+            });
+        }
+		//
+		/*function loadProductsFromCSV() {
+
+				const rows = [
+						["Produto A", 10.50, 2,0],
+						["Produto B", 25.00, 1,0],
+						["Produto C", 5.75, 4,0],
+					];//csvText.split("\n").map((row) => row.split(","));
+					
+			rows.forEach((row) => {
+				if (row.length >= 3) {
+					const description = row[0].trim();
+					const price = parseFloat(row[1].trim());
+					const quantity = parseInt(row[2].trim());
+					if (description && !isNaN(price) && !isNaN(quantity)) {
+						//addProduct(description, price, quantity);
+						//subtotal=0.00;
+						createRow(description, parseFloat(price), parseInt(quantity), parseFloat(subtotal));
+						productTable.appendChild(row);
+						updateTotalPrice(subtotal);
+						productForm.reset();
+					}
+				}
+			});
+		}*/
+                //.catch((error) => console.error("Erro ao carregar produtos do CSV:", error));
+				
+        //}
+document.addEventListener("DOMContentLoaded", function () {
+		//loadProductsFromCSV();	
+	if(cestanaUrl=="G") {loadInitialData();}
 		});
 		//if(cestanaUrl=="G") {loadProductsFromCSV("cestaGSovinski.csv");}
